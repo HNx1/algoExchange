@@ -23,7 +23,7 @@
   opposing order hits these orders, we then consequently do not consume
   funds/shares as one might expect as they are already stored in the order.
 - In the UtilityExchange class we add some basic utility beyond the minimum
-  required - the ability to cancel orders and the getOrderStack method which
+  required - the ability to cancel orders and the printOrderStack method which
   prints a classic bid ask table for the supplied asset. You can supply an
   optional nums argument to show more or fewer items in the table.
 - Some examples of simple adaptations you can easily add - storing bid and ask
