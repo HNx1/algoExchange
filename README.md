@@ -29,4 +29,4 @@
 - Some examples of simple adaptations you can easily add - storing bid and ask
   order stacks for each asset (this implementation stores one list of all orders
   and fetches from it using conditional list comprehension), adding new assets
-  or traders to an existing Exchange, generating a password for each participant on creation that must be supplied to transact using their account
+  or traders to an existing Exchange, generating a password for each participant on creation that must be supplied to transact using their account, pricing based on spread, transaction fees, a central oracle with unlimited funds that generates a random price series for each assets and hits orders relative to the oracle price
