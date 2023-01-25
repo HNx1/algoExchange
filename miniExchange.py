@@ -28,7 +28,6 @@ class Exchange():
     def getOrderList(self, asset, type):
         rev = False if type == "sell" else True
         return sorted([x for x in self.fullOrderList if x.asset == asset and x.type == type and x.quant > 0], key=getPrice, reverse=rev)
-        # return ([x for x in self.fullOrderList if x.asset == asset and x.type == type and x.quant > 0]).sort(key=getPrice, reverse=rev)
 
     def transact(self, asset, type, quant, trader, price=None):
         lim = True if price else False
