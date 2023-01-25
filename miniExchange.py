@@ -75,7 +75,7 @@ class UtilityExchange(Exchange):
             return [("", "") for _ in range(nums)]
         buildPrice = list1[0].price
         i, count = 0, 0
-        while len(list2) < nums+1 and len(list1) > i:
+        while len(list2) < nums and len(list1) > i:
             if list1[i].price == buildPrice:
                 count += list1[i].quant
             else:
