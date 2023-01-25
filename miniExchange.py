@@ -102,6 +102,8 @@ class UtilityExchange(Exchange):
 
     def cancelOrder(self, uid):
         order = self.orderList[uid]
-        self.traders[order.trader].funds += order.quant * \
-            order.price * (order.type == "buy")
+        if order.type == "buy":
+            self.traders[order.trader].funds += order.quant * order.price
+        else:
+            self.traders[order.trader].assets[order.asset] += order.quant
         order.quant = 0
