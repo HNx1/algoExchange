@@ -25,7 +25,7 @@
 - In the UtilityExchange class we add some basic utility beyond the minimum
   required - the ability to cancel orders and the getOrderStack method which
   prints a classic bid ask table for the supplied asset. You can supply an
-  optional nums argument to show more or fewer items in the stack
+  optional nums argument to show more or fewer items in the table.
 - Some examples of simple adaptations you can easily add - storing bid and ask
   order stacks for each asset (this implementation stores one list of all orders
   and fetches from it using conditional list comprehension), adding new assets
