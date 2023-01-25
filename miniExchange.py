@@ -88,11 +88,11 @@ class UtilityExchange(Exchange):
     def pad(self, val, lenn):
         return " " * ((lenn-len(str(val)))//2) + str(val)+" " * ((lenn-len(str(val))+1)//2)
 
-    def getOrderStack(self, asset, nums=5):
+    def printOrderStack(self, asset, nums=5):
         list1 = self.summedOrderList(asset, "buy", nums)
         list2 = self.summedOrderList(asset, "sell", nums)
 
-        print(f"                   Asset {asset}\n\n    Size  |    Bid   ||    Ask   |  Size\n", "-" *
+        print(f"\n                   Asset {asset}\n\n    Size  |    Bid   ||    Ask   |  Size\n", "-" *
               42)
         for i in range(nums):
             print(
