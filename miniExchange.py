@@ -107,4 +107,4 @@ class UtilityExchange(Exchange):
         order = self.fullOrderList[uid]
         self.traders[order.trader].funds += order.quant * \
             order.price * (order.type == "buy")
-        self.fullOrderList[uid].quant = 0
+        order.quant = 0
