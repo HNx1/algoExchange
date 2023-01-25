@@ -40,8 +40,8 @@ class Exchange():
             el = self.getOrderList(asset, opp)[0]
             if not price or ind * el.price < ind * price:
                 quantEl = el.quant if el.quant < quant else quant
-                if type == "buy" and quantEl > self.traders[trader].funds/el.quant:
-                    quantEl = self.traders[trader].funds/el.quant
+                if type == "buy" and quantEl > self.traders[trader].funds/el.price:
+                    quantEl = self.traders[trader].funds/el.price
                 self.traders[trader].funds -= el.price*quantEl*ind
                 self.traders[trader].assets[asset] += quantEl*ind
                 if type == "buy":
