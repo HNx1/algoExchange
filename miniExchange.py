@@ -22,12 +22,12 @@ class Exchange():
     def __init__(self, assets, participants):
         self.traders = [Trader(assets) for _ in range(participants)]
         self.assetCount = assets
-        self.fullOrderList = []
+        self.orderList = []
         self.orderCount = 0
 
     def getOrderList(self, asset, type):
         rev = False if type == "sell" else True
-        return sorted([x for x in self.fullOrderList if x.asset == asset and x.type == type and x.quant > 0], key=getPrice, reverse=rev)
+        return sorted([x for x in self.orderList if x.asset == asset and x.type == type and x.quant > 0], key=getPrice, reverse=rev)
 
     def transact(self, asset, type, quant, trader, price=None):
         lim = True if price else False
@@ -59,7 +59,7 @@ class Exchange():
             order = Order(asset, type, quant, price,
                           trader, self.orderCount)
             self.orderCount += 1
-            self.fullOrderList.append(order)
+            self.orderList.append(order)
             if type == "buy":
                 self.traders[trader].funds -= order.quant*order.price
             else:
@@ -68,8 +68,7 @@ class Exchange():
 
 class UtilityExchange(Exchange):
     def summedOrderList(self, asset, type, nums):
-        list1 = self.getOrderList(asset, type)
-        list2 = []
+        list1, list2 = self.getOrderList(asset, type), []
         if len(list1) == 0:
             return [("", "") for _ in range(nums)]
         buildPrice, i, count = list1[0].price, 0, 0
@@ -102,7 +101,7 @@ class UtilityExchange(Exchange):
         return
 
     def cancelOrder(self, uid):
-        order = self.fullOrderList[uid]
+        order = self.orderList[uid]
         self.traders[order.trader].funds += order.quant * \
             order.price * (order.type == "buy")
         order.quant = 0
