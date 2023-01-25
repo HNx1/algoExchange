@@ -1,12 +1,12 @@
 # miniExchange
 
-## Summary
+### Summary
 
-- This program provides a light-weight Exchange class that allows bid-ask
+- A light-weight Exchange class that allows bid-ask
   trading of a number of assets between a number of participants
 - It supports market and limit orders and fund availability checks
 
-## Interpretation
+### Interpretation
 
 - The core functionality of the Exchange class comes from the transact method.
   Supplying an optional price to this method will create a limit order,
