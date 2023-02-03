@@ -13,14 +13,16 @@ class Order():
 
 
 class Trader():
-    def __init__(self, assetCount):
-        self.funds = 1000
-        self.assets = [10]*assetCount
+    def __init__(self, assetCount, oracle=False, funds=10000000000):
+        self.funds = float("inf") if oracle else funds
+        self.assets = [float("inf")] * \
+            assetCount if oracle else [1000000]*assetCount
 
 
 class Exchange():
     def __init__(self, assets, participants):
-        self.traders = [Trader(assets) for _ in range(participants)]
+        self.traders = [Trader(assets, oracle="True")]+[Trader(assets)
+                                                        for _ in range(participants)]
         self.assetCount = assets
         self.orderList = []
         self.orderCount = 0
@@ -31,18 +33,20 @@ class Exchange():
 
     def transact(self, asset, type, quant, trader, price=None):
         lim = True if price else False
+        totalPrice, orderSize = 0, quant
         if type == "sell" and self.traders[trader].assets[asset] < quant:
             print("Not enough shares to sell")
-            return
+            return "fail"
         ind = -1 if type == "sell" else 1
         opp = "buy" if type == "sell" else "sell"
-        while self.getOrderList(asset, opp) and quant > 0:
+        while self.getOrderList(asset, opp) and self.traders[trader].funds > 1 and quant > 0:
             el = self.getOrderList(asset, opp)[0]
             if not price or ind * el.price < ind * price:
                 quantEl = el.quant if el.quant < quant else quant
                 if type == "buy" and quantEl > self.traders[trader].funds/el.price:
                     quantEl = self.traders[trader].funds/el.price
                 self.traders[trader].funds -= el.price*quantEl*ind
+                totalPrice += el.price*quantEl
                 self.traders[trader].assets[asset] += quantEl*ind
                 if type == "buy":
                     self.traders[el.trader].funds += el.price * quantEl
@@ -64,6 +68,8 @@ class Exchange():
                 self.traders[trader].funds -= order.quant*order.price
             else:
                 self.traders[trader].assets[asset] -= order.quant
+
+        return quant, 0 if orderSize == quant else totalPrice/(orderSize-quant)
 
 
 class UtilityExchange(Exchange):
@@ -107,3 +113,11 @@ class UtilityExchange(Exchange):
         else:
             self.traders[order.trader].assets[order.asset] += order.quant
         order.quant = 0
+
+    def addAsset(self):
+        self.assetCount += 1
+        for trader in self.traders:
+            trader.assets.append(10)
+
+    def addTrader(self):
+        self.traders.append(Trader(self.assetCount))
