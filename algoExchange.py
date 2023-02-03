@@ -9,7 +9,8 @@ class AlgoExchange(UtilityExchange):
         self.oraclePrices = [100.0]*self.assetCount
         # Beta for each asset, constant for now but will model evolution of these betas in future update. This just multiplies up for each asset with market vols
         self.betas = [1.0]*self.assetCount
-        # Risk Free Rate and market volatility, will model evolution of both in future update. RFR is a per tick rate i.e. annualised rate split over 252*tickRate compounded periods
+        # Risk Free Rate and market volatility, will model evolution of both in future update. 
+        # RFR is a per tick rate i.e. annualised rate split over 252*tickRate compounded periods
         self.rfr = 0.03
         self.vol = 0.16
         # Per tick rfr and vols
@@ -65,12 +66,12 @@ class AlgoExchange(UtilityExchange):
 
     def oracleBook(self, asset):
         # Here we are going to take the oracle price for each asset and use it to generate an order book for the asset
-        # Here's what we'll do- take 0.2*asset.vol either side of the current oracle price, and create a linspace with length self.breadth between those parameters
+        # Take a perturbation either side of the current oracle price, and create a linspace with length self.breadth between those parameters
         # We need to know the total amount of liquidity to create for each asset, and we'll assume 10% of each asset is in the order book at a given time.
         # We'll use a Poisson distribution to generate the order book for each asset across the buy and sell side of the book.
         # Poisson only because its a very simple skewed distribution, with a clipped left tail that can simulate a zero-crossover order book
-        # We want very little liquidity very close to the asset (close based on the vol) then a lot of liquidity quite close to the asset, then a fat tail. Poisson is good for this
-        # For simplicity we'll make the books symmetric, if we change this, we want the expectation of the order book overall to remain equal to the oracle price so our update process works out
+        # We want very little liquidity very close to the asset (close based on the vol) then a lot of liquidity quite close to the asset, then a fat tail. 
+        # For simplicity we'll make the books symmetric. If you change this, make sure the martingale property of the oracles are preserved in the no order situation 
         spread = 0.2*self.betas[asset]*self.vol
         r = [self.oraclePrices[asset]*p for p in [1-spread, 1.0, 1+spread]]
         buyR = np.flip(np.linspace(
