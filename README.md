@@ -89,9 +89,11 @@
 - We implement TWAP and VWAP strategies
 - For experimentation simplicity we call a super method that automatically sets
   both asset count and trader count to 1 for an algoExchange. You can still add
-  traders and participants to the exchange, but the intended purpose is to test how trades impact the market
+  traders and participants to the exchange
 - This is a synchronous exchange so you must supply the orders to execute prior
-  to running an oracle loop
+  to running an oracle loop. The suggested way to do this is to implement a 
+  method in the AlgoExchange class yourself that contains the trading strategy 
+  you wish to run.
 
 ### The algorithms
 
