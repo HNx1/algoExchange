@@ -13,10 +13,10 @@ class Order():
 
 
 class Trader():
-    def __init__(self, assetCount, oracle=False, funds=10000000000):
+    def __init__(self, assetCount, oracle=False, funds=1000):
         self.funds = float("inf") if oracle else funds
         self.assets = [float("inf")] * \
-            assetCount if oracle else [1000000]*assetCount
+            assetCount if oracle else [10]*assetCount
 
 
 class Exchange():
